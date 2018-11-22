@@ -55,9 +55,8 @@ public class Rational {
 	
 	private int[] sub(int[] a, int[] b) {
 		int[] tmp = new int[a.length];
-		int[] multiA = new int[a.length];
-		int[] multiB = new int[b.length];
-		multiA[0] = a
+		tmp[0] = (a[0] * b[1]) - b[0] * a[1];
+		tmp[1] = a[1] * b[1];
 		return tmp;
 	}
 	
@@ -66,13 +65,14 @@ public class Rational {
 		for(int i = 0; i < a.length; ++i) {
 			tmp[i] = a[i] * b[i];
 		}
-		
 		return tmp;
 	}
 	
 	private int[] div(int[] a, int[] b) {
 		int[] tmp = new int[a.length];
-		
+		tmp[0] = b[1];
+		tmp[1] = b[0];
+		tmp = multi(a,tmp);
 		return tmp;
 	}
 	
