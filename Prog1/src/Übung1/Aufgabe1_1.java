@@ -1,6 +1,6 @@
 package Übung1;
 
-public class Aufgabe1 {
+public class Aufgabe1_1 {
 	int[] zahlen = new int[5];
 	int min;
 	int max = 0;
@@ -42,7 +42,7 @@ public class Aufgabe1 {
 	
 	public static void main(String[] args) {
 		
-		Aufgabe1 a1 = new Aufgabe1();
+		Aufgabe1_1 a1 = new Aufgabe1_1();
 		a1.zahlen[0] = 5;
 		a1.zahlen[1] = 4;
 		a1.zahlen[2] = 3;

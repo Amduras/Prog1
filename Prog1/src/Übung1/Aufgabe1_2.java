@@ -1,14 +1,14 @@
 package Übung1;
 
-public class Aufgabe2 {
+public class Aufgabe1_2 {
 	
 	public void sum() {
 		int n = 6;
 		int erg = 0;
 		int i = 0;
-		while(i <= n-1) {
+		while(i < n) {
 			erg += i;
-			i +=1;
+			++i;
 			System.out.println(i+". Zwischensumme: "+erg);
 		}
 		System.out.println("Ergebnis: "+erg);
@@ -21,13 +21,13 @@ public class Aufgabe2 {
 		while(i <= n) {
 			erg *= i;
 			System.out.println(i+". Zwischensumme: "+erg);
-			i +=1;
+			++i;
 		}
 		System.out.println("Ergebnis: "+erg);
 	}
 	
 	public static void main(String[] args) {
-		Aufgabe2 a2 = new Aufgabe2();
+		Aufgabe1_2 a2 = new Aufgabe1_2();
 		a2.sum();
 		a2.prod();
 	}
