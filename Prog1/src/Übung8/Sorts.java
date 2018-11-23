@@ -5,11 +5,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Sorts {
-	double[] check;
-	int amountZahlen;
 	
-	Sorts(int amountZahlen){
-		this.amountZahlen = amountZahlen;
+	Sorts(){
 	}
 	
 	private void insertion_sort(double[] arr) {
@@ -22,12 +19,7 @@ public class Sorts {
 			}
 			arr[j] = IVAL;
 		}
-		
-		if(checkSorted(arr)) {
-			printIt(arr);
-		} else {
-			System.out.println("Sortieren fehlgeschlagen");
-		}
+		System.out.println("Done.");
 	}
 	
 	private void selection_sort(double[] arr) {
@@ -40,12 +32,7 @@ public class Sorts {
 			}
 			swap(arr, min, i);
 		}
-		
-		if(checkSorted(arr)) {
-			printIt(arr);
-		} else {
-			System.out.println("Sortieren fehlgeschlagen");
-		}
+		System.out.println("Done.");
 	}
 	
 	private void bubble_sort(double[] arr) {
@@ -58,11 +45,7 @@ public class Sorts {
 				}
 			}
 			if(!bAtLeastOneSwap) {
-				if(checkSorted(arr)) {
-					printIt(arr);
-				} else {
-					System.out.println("Sortieren fehlgeschlagen");
-				}
+				System.out.println("Done.");
 				return;
 			}
 		}
@@ -79,18 +62,22 @@ public class Sorts {
 		for(int i = 0; i < arr.length; ++i) {
 			arr[i] = rnd.nextDouble()*10;
 		}
-		check = arr;
 		return arr;
 	}
 	
-	private boolean checkSorted(double[] arr) {
+	private void checkSorted(double[] arr, double[] check) {
 		boolean sorted = true;
 		for(int i = 0; i < arr.length; ++i) {
 			if(arr[i] != check[i]) {
 				sorted = false;
 			}
 		}
-		return sorted;
+		
+		if(sorted) {
+			System.out.println("Alle Zahlen sortiert");
+		} else {
+			System.out.println("Sortieren fehlgeschlagen");
+		}
 	}
 	
 	private void printIt(double[] arr) {
@@ -102,23 +89,49 @@ public class Sorts {
 	
 	public static void main(String[] args) {
 		
-		int amountZahlen = 100;
+		long start;
+		long stop;
+		int amountZahlenInsert = 100000000;
+		int amountZahlenSelect = 200000;
+		int amountZahlenBubble = 100000000;
 		int seed = 42;
-		double[] arr = new double[amountZahlen];
-		Sorts sorts = new Sorts(amountZahlen); 
+		Sorts sorts = new Sorts(); 
 		
-		arr = sorts.genNumbers(arr, seed);
-		Arrays.parallelSort(sorts.check);
+		double[] arr = new double[amountZahlenInsert];
+		double[] check = new double[amountZahlenInsert];
 		
 		System.out.println("Insertionsort");
+		arr = sorts.genNumbers(arr, seed);
+		check = arr;
+		Arrays.parallelSort(check);
+		start = System.nanoTime();
 		sorts.insertion_sort(arr);
+		stop = System.nanoTime();
+		sorts.checkSorted(arr, check);
+		System.out.println("Zeit: "+((stop-start)/1000000)+"ms für "+amountZahlenInsert+" Zahlen");
 		
-		arr = sorts.genNumbers(arr, seed);
 		System.out.println("\nSelectionsort");
-		sorts.selection_sort(arr);
-		
+		arr = new double[amountZahlenSelect];
+		check = new double[amountZahlenSelect];
 		arr = sorts.genNumbers(arr, seed);
+		check = arr;
+		Arrays.parallelSort(check);
+		start = System.nanoTime();
+		sorts.selection_sort(arr);
+		stop = System.nanoTime();
+		sorts.checkSorted(arr, check);
+		System.out.println("Zeit: "+((stop-start)/1000000000)+"s für "+amountZahlenSelect+" Zahlen");
+		
 		System.out.println("\nBubblesort");
+		arr = new double[amountZahlenBubble];
+		check = new double[amountZahlenBubble];
+		arr = sorts.genNumbers(arr, seed);
+		check = arr;
+		Arrays.parallelSort(check);
+		start = System.nanoTime();
 		sorts.bubble_sort(arr);
+		stop = System.nanoTime();
+		sorts.checkSorted(arr, check);
+		System.out.println("Zeit: "+((stop-start)/1000000)+"ms für "+amountZahlenBubble+" Zahlen");
 	}
 }
