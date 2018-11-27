@@ -91,9 +91,9 @@ public class Sorts {
 		
 		long start;
 		long stop;
-		int amountZahlenInsert = 100000000;
+		int amountZahlenInsert = 10000000;
 		int amountZahlenSelect = 200000;
-		int amountZahlenBubble = 100000000;
+		int amountZahlenBubble = 10000000;
 		int seed = 42;
 		Sorts sorts = new Sorts(); 
 		
