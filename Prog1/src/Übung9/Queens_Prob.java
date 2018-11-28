@@ -13,17 +13,20 @@ public class Queens_Prob {
 			return true;
 		}
 
-		for( ;row < qs.length; ++row) {
+		for(int row = 0 ;row < qs.length; ++row) {
 			if(isSafe(qs, row, col)) {
-				qs[col] = row;
-				if(queens_helper(qs, col+1, rand)) {
+				if(rand) {
+					qs[0] = (int) (Math.random()*qs.length);
+				} else {
+					qs[col] = row;
+				}
+				if(queens_helper(qs, col+1, false)) {
 					return true;
 				}
 			}
 		}
+		return false;
 	}
-	return false;
-}
 	
 	private boolean isSafe(int[] qs, int row, int col) {
 		int up = row;
