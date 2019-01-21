@@ -1,16 +1,17 @@
 package rational;
 
-public class Rational {
-	int[] zahl1;
-	int[] zahl2;
+class Rational implements Number{
+	private int zaehler;
+	private int nenner;
 	
-	public Rational(int z1 , int n1, int z2, int n2) {
-		zahl1 = new int[2];
-		zahl2 = new int[2];
-		zahl1[0] = z1;
-		zahl1[1] = n1;
-		zahl2[0] = z2;
-		zahl2[1] = n2;
+	public Rational(int zaehler, int nenner) {
+		int[] tmp = reduce(zaehler, nenner);
+		this.zaehler = tmp[0];
+		if(tmp[1] != 0) {
+			this.nenner = tmp[1];
+		} else {
+			throw new MyException("Nenner ist 0");
+		}
 	}
 	
 	private int ggt(int z1, int z2) {
@@ -20,70 +21,73 @@ public class Rational {
 			return ggt(z2, z1%z2);
 		}
 	}
+
+	public Rational sub(Rational a) {
+		int zaehler = (this.zaehler * a.getNenner()) - (a.getZaehler() * this.nenner);
+		int nenner = (this.nenner * a.getNenner());
+		return new Rational(zaehler, nenner);
+	}
+
+	public Rational add(Rational a) {
+		int zaehler = (this.zaehler * a.getNenner()) + (a.getZaehler() * this.nenner);
+		int nenner = (this.nenner * a.getNenner());
+		return new Rational(zaehler, nenner);
+	}
 	
-	private int[] addSub(int[] a, int[] b, boolean plus) {
-		int[] tmp = new int[a.length];
-		if(plus) {
-			tmp[0] = (a[0] * b[1]) + (b[0] * a[1]);
-			tmp[1] = a[1] * b[1];
-		} else if(!plus) {
-			tmp[0] = (a[0] * b[1]) - b[0] * a[1];
-			tmp[1] = a[1] * b[1];
-		}
+	public Rational multi(Rational a) {
+		int zaehler = (this.zaehler * a.getZaehler());
+		int nenner = (this.nenner * a.getNenner());
+		return new Rational(zaehler, nenner);
+	}
+	
+	public Rational div(Rational a) {
+		int zaehler = a.getNenner();
+		int nenner = a.getZaehler();
+		Rational tmp = new Rational(zaehler, nenner);
+		tmp = multi(tmp);
 		return tmp;
 	}
 	
-	private int[] multi(int[] a, int b[]) {
-		int[] tmp = new int[a.length];
-		for(int i = 0; i < a.length; ++i) {
-			tmp[i] = a[i] * b[i];
-		}
-		return tmp;
-	}
-	
-	private int[] div(int[] a, int[] b) {
-		int[] tmp = new int[a.length];
-		tmp[0] = b[1];
-		tmp[1] = b[0];
-		tmp = multi(a,tmp);
-		return tmp;
-	}
-	
-	private String reduce(int[] bruch) {
-		boolean negZaehler = bruch[0] < 0;
-		boolean negNenner = bruch[1] < 0;
-		int ggt = ggt(negZaehler ? -bruch[0] : bruch[0], negNenner ? -bruch[1] : bruch[1]);
+	public int[] reduce(int a, int b) {
+		int[] tmp = {0,0};
+		boolean negA = a < 0;
+		boolean negB = b < 0;
+		int ggt = ggt(negA ? -a : a, negB ? -b : b);
 		if(ggt != 0) {
-			bruch[0] /= ggt;
-			bruch[1] /= ggt;
-			if(negNenner) {
-				bruch[0] = -bruch[0];
-				bruch[1] = -bruch[1];
+			tmp[0] = a / ggt;
+			tmp[1] = b/ ggt;
+			if(negB) {
+				tmp[0] = -a;
+				tmp[1] = -b;
 			}
-			return bruch[0]+"/"+bruch[1];
+			return tmp;
 		} else {
-			return "Undefined";
+			return tmp;
 		}
 	}
 	
-	public static void main(String[] args) {
-//		args[0] = zaehler1;
-//		args[1] = nenner1;
-//		args[2] = zaehler2;
-//		args[3] = nenner2;
-		Rational ratio = new Rational(Integer.parseInt(args[0]), 
-				Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
-		int[] add = ratio.addSub(ratio.zahl1, ratio.zahl2, true);
-		int[] sub = ratio.addSub(ratio.zahl1, ratio.zahl2, false);
-		int[] multi = ratio.multi(ratio.zahl1, ratio.zahl2);
-		int[] div = ratio.div(ratio.zahl1, ratio.zahl2);
-		
-		System.out.println("Zahl1: "+args[0]+"/"+args[1]+" = "+ratio.reduce(ratio.zahl1));
-		System.out.println("Zahl2: "+args[2]+"/"+args[3]+" = "+ratio.reduce(ratio.zahl2));
-		System.out.println("Add: "+add[0]+"/"+add[1]+" = "+ratio.reduce(add));
-		System.out.println("Sub: "+sub[0]+"/"+sub[1]+" = "+ratio.reduce(sub));
-		System.out.println("Multi: "+multi[0]+"/"+multi[1]+" = "+ratio.reduce(multi));
-		System.out.println("Div: "+div[0]+"/"+div[1]+" = "+ratio.reduce(div));
-		
+	@Override
+	public String toString() {
+		return zaehler+"/"+nenner; 
+	}
+	
+	boolean less(Rational r) {
+		return nenner*r.zaehler < r.nenner*zaehler;
+	}
+	
+	public int getZaehler() {
+		return zaehler;
+	}
+
+	public void setZaehler(int zaehler) {
+		this.zaehler = zaehler;
+	}
+
+	public int getNenner() {
+		return nenner;
+	}
+
+	public void setNenner(int nenner) {
+		this.nenner = nenner;
 	}
 }

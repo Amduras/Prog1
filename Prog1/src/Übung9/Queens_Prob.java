@@ -4,8 +4,12 @@ public class Queens_Prob {
 	
 	private int[] queens(int n, boolean rand) {
 		int[] q = new int[n];
-		queens_helper(q, 0, rand);
-		return q;
+		boolean done = queens_helper(q, 0, rand);
+		if(done) {
+			return q;
+		} else {
+			return null;
+		}
 	}
 	
 	private boolean queens_helper(int[] qs, int col, boolean rand) {
@@ -34,8 +38,7 @@ public class Queens_Prob {
 		boolean isStillSafe = true;
 		
 		for(int i = col-1; i >=0 && isStillSafe; --i) {
-			int r = qs[i];
-			isStillSafe = r != row && r != ++up && r != --down;
+			isStillSafe = qs[i] != row && qs[i] != ++up && qs[i] != --down;
 		}
 		return isStillSafe;
 	}
@@ -62,11 +65,11 @@ public class Queens_Prob {
 		Queens_Prob q = new Queens_Prob();
 		int n = 8;
 		boolean rand = true;
-		if(n > 3) {
-			int[] queens = q.queens(n, rand);
+		int[] queens = q.queens(n, rand);
+		if(queens != null) {
 			q.printIt(queens, n);
 		} else {
-			System.out.println("Keine gueltige Loesung vorhanden.");
+			System.out.println("Keine gueltige Loesung gefunden.");
 		}
 	}
 }

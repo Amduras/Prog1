@@ -1,45 +1,33 @@
 package Übung9;
 
-import java.text.DecimalFormat;
-
 public class Wurzel {
 	
-	private double sqRoot(double uG, double oG, int counter) {
-		
-		double tmp = oG/2;
-		
-		if(counter < 20) {
-			if(tmp * 2 < uG) {
-				return sqRoot(tmp, oG, counter+1);
-			} else{
-				return sqRoot(uG, tmp, counter+1);
-			}
+	private double root(double root, int sqr) {
+		if(root < 1.0) {
+			return rootHelper(root, root, 1D, sqr);
 		} else {
-			return tmp;
+			return rootHelper(root,1D, root, sqr);
 		}
-		
-//		if(counter < 100) {
-//			
-//			if(tmp * 2 > oG) {
-//				sqRoot(uG, tmp, counter+1);
-//			} else if(tmp * 2 < uG) {
-//				sqRoot(tmp, oG, counter+1);
-//			}
-//		} else {
-//			return tmp;
-//		}
+	}
+	
+	private double rootHelper(double root, double ug, double og, int sqr) {
+		double mid = ((ug+og)/2);
+		if((mid*sqr) != root) {
+			if(Math.abs((mid*sqr)-root) < 0.00000000000000001) {
+				return mid;
+			} else {
+				if((mid*sqr) > root) {
+					mid = rootHelper(root, ug, mid, sqr);
+				} else {
+					mid = rootHelper(root, mid, og, sqr);
+				}
+			}
+		}
+		return mid;
 	}
 	
 	public static void main(String[] args) {
-		DecimalFormat df = new DecimalFormat("#.##");
 		Wurzel w = new Wurzel();
-		int number = (int) (Math.random()*100);
-		System.out.println(number);
-		double uG = 1;
-		double oG = number;
-		int counter = 0;
-		double root = w.sqRoot(uG, oG, counter);
-		System.out.println(Math.sqrt(number));
-		System.out.println("Wurzel von: "+number+ " ist: "+df.format(root));
+		System.out.println(w.root(27, 2));
 	}
 }
