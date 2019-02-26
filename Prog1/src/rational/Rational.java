@@ -90,4 +90,10 @@ class Rational implements Number{
 	public void setNenner(int nenner) {
 		this.nenner = nenner;
 	}
+
+	@Override
+	public boolean less(Object r1, Object r2) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
